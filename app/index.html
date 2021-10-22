@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-CA" class="js" ng-app="calcApp" ng-controller="calcCtrl">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="scripts/calcCtrl.js"></script>
+        <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+        <link rel="stylesheet" href="static/styles.css"/>
+    </head>
+
+    <body>
+        <div id="page-container">
+            <header id="page-header">
+                <div class="header-container">
+                    <div id="logo-container">
+                        <img src="static/morello-icon.png"/>
+                    </div>
+                    <div id="nav-container">
+                        <a class="link">Log in</a>
+                        <!-- <input type="button" id="find-more-button" value="Find out more" onclick="alert('qqq');"/> -->
+                        <a href="https://bit.ly/31VqvNi" class="button">Find out more</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <div class="text_centre padding-top">
+                    <h1>2021 Income Tax Calculator</h1>
+                    <p>Use our simple 2021 tax calculator to quickly estimate your federal and provincial taxes</p>
+                </div>
+
+                <div class="text_centre padding-top">
+                    <select id="province-select" ng-model="selectedProvince" ng-options="item.name for item in provinces" ng-change="provinceOnChange()">
+                        <option value="">Select province or territory</option>
+                    </select>
+                </div>
+
+                <div class="data-container padding-top">
+                    <div class="row">
+                        <div class="column">
+                            <div class="inner-div">
+                                <div>
+                                    <label for="employment-income-input">Employment income</label>
+                                    <input type="number" min="0" max="500000" class="income-input" ng-model="employmentIncome" id="employment-income-input" ng-change="updateTotal()" ng-model-options="{ updateOn: 'blur' }"/>
+                                </div>
+                                <div class="padding-top">
+                                    <input type="range" min="0" max="500000" step="500" value="{{employmentIncome == null ? 0 : employmentIncome}}" class="slider"/>
+                                </div>
+
+                                <div class="padding-top">
+                                    <label for="self-employment-income-input">Self-employment income</label>
+                                    <input type="number" min="0" max="500000" class="income-input" ng-model="selfEmploymentIncome" id="self-employment-income-input" ng-change="updateTotal()" ng-model-options="{ updateOn: 'blur' }"/>
+                                </div>
+                                <div class="padding-top">
+                                    <input type="range" min="0" max="500000" step="500" value="{{selfEmploymentIncome == null ? 0 : selfEmploymentIncome}}" class="slider"/>
+                                </div>
+                            </div>
+
+                            <div class="margin-top container">
+                                <div class="inner-div">
+                                    <h2>Results</h2>
+
+                                    <div>
+                                        <span>Total income</span>
+                                        <span style="float: right;">{{totalIncome | currency}}</span>
+                                    </div>
+                                    <div class="padding-top">
+                                        <span>Total tax</span>
+                                        <span style="float: right;">{{totalTax | currency}}</span>
+                                    </div>
+                                    <div class="padding-top padding-bottom">
+                                        <span>After tax income</span>
+                                        <span style="float: right;">{{totalIncome - totalTax | currency}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column" style="float: right !important;">
+                            <div class="container" id="chart-container">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
