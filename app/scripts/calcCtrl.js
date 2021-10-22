@@ -1,57 +1,95 @@
 var app = angular.module("calcApp", []);
 
-app.controller("calcCtrl", function($scope) {
+var env = {};
+
+// Import variables if present (from env.js)
+if(window){  
+  Object.assign(env, window.__env);
+}
+
+//assign settings from environment (simulated in env.js)
+app.constant('__env', env);
+
+class ApiService {
+    constructor(__env) {
+        this.calculateTaxes = function calculateTaxes(income, province) {
+            return $http
+                .get(__env.apiUrl + 'taxcalculator/calculate?totalincome=' + income + '&&province=' + province)
+                .then(function (response) {
+                    return response;
+                },
+                    function (response) {
+                        alert(response.message);
+                    }
+                );
+        };
+    }
+};
+
+// Inject dependencies
+ApiService.$inject = ['__env'];
+
+app.controller("calcCtrl", function($scope, $http, __env) {
     $scope.employmentIncome = 0;
     $scope.selfEmploymentIncome = 0;
-    $scope.totalIncome = 100000;
-    $scope.totalTax = 30000;
-    $scope.provTax = 10000;
-    $scope.fedTax = 20000;
-    $scope.netIncome = 70000;
+    $scope.totalIncome = 0;
+    $scope.totalTax = 0;
+    $scope.provTax = 0;
+    $scope.fedTax = 0;
+    $scope.netIncome = 0;
+    $scope.employmentIncomeSlider = 0;
+    $scope.selfEmploymentIncomeSlider = 0;
 
     //list of provinces
-    $scope.provinces = [
-        {code: 'AB', name: 'Alberta'},
-        {code: 'BC', name: 'British Columbia'},
-        {code: 'MB', name: 'Manitoba'},
-        {code: 'NB', name: 'New Brunswick'},
-        {code: 'NL', name: 'Newfoundland and Labrador'},
-        {code: 'NS', name: 'Nova Scotia'},
-        {code: 'NT', name: 'Northwest Territories'},
-        {code: 'NU', name: 'Nunavut'},
-        {code: 'ON', name: 'Ontario'},
-        {code: 'PE', name: 'Prince Edward Island'},
-        {code: 'QB', name: 'Quebec'},
-        {code: 'SK', name: 'Saskatchewan'},
-        {code: 'YT', name: 'Yukon'}
-    ]
+    $scope.provinces = __env.provinces;
 
     //update total income when either Employment or SDelf-Employment income changes
     $scope.updateTotal = function() {
+        $scope.selfEmploymentIncomeSlider = ($scope.selfEmploymentIncome == null) ? 0 : $scope.selfEmploymentIncome;
+        $scope.employmentIncomeSlider = ($scope.employmentIncome == null) ? 0 : $scope.employmentIncome;
         $scope.totalIncome = $scope.employmentIncome + $scope.selfEmploymentIncome;
     }
 
-    let data = [{
-        type: "bar",
-        name: "Federal tax",
-        x: ["2020", "2021"],
-        y: [0, $scope.fedTax]
-    },
-    {
-        type: "bar",
-        name: "Provincial tax",
-        x: ["2020", "2021"],
-        y: [0, $scope.provTax]
-    },
-    {
-        type: "bar",
-        name: "After tax income",
-        x: ["2020", "2021"],
-        y: [$scope.totalIncome, $scope.netIncome]
-    }];
+    $scope.updateFromSlider = function() {
+        $scope.employmentIncome = $scope.employmentIncomeSlider;
+        $scope.selfEmploymentIncome = $scope.selfEmploymentIncomeSlider;
+        $scope.updateTotal();
+    }
 
-    let layout = {barmode: 'stack'};
-    Plotly.newPlot('chart-container', data, layout);
+    let data = {
+        labels: [""],
+        datasets: [{
+            label: "Federal tax",
+            data: [$scope.fedTax],
+            backgroundColor: "#f74"
+            },
+            {
+                label: "Provincial tax",
+                data: [$scope.provTax],
+                backgroundColor: "#86f"
+            },
+            {
+                label: "After tax income",
+                data: [$scope.netIncome],
+                backgroundColor: "#5d5"
+            }]
+    };
+
+    const stackedBar = new Chart('chart-canvas', {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    }).$inject = ['__env'];
 
     //on Province change
     $scope.provinceOnChange = function() {
@@ -60,6 +98,10 @@ app.controller("calcCtrl", function($scope) {
             return;
         }
 
-        alert($scope.selectedProvince.code);
+
     }
 });
+
+function updateEmploymentInput(){
+
+}

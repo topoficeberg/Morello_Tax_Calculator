@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/taxcalculator/calculate",
+      "launchUrl": "api/taxcalculator/calculate?totalincome=100000&&province=ON",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

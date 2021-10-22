@@ -1,5 +1,7 @@
 $font-family: 'Lato',Helvetica,Arial,Lucida,sans-serif;
 $white: white;
+$border-colour: #e6e4e3;
+$morello-colour: #f86;
 
 .header-container {
     width: 95%;
@@ -14,6 +16,27 @@ $white: white;
 
 #logo-container {float: left !important;}
 #nav-container {float: right !important;}
+
+#chart-container {
+    padding: 10px 10px 10px 10px;
+}
+
+#main-footer {
+    height: 50px;
+    width: 100%;
+    position: relative;
+}
+
+#upper-footer {
+    background-color: $morello-colour;
+    height: 20%;
+}
+
+#lower-footer {
+    background-color: #445;
+    height: 80%;
+}
+
 
 .main-content {
     background-color: #eee;
@@ -40,23 +63,20 @@ $white: white;
     margin-top: 20px;
 }
 
+.float-right {
+    float: right;
+}
+
 .data-container {
     display: table;
     margin: auto;
     width: 60%;
 }
 
-.column {
-    //float: left;
-    width: 45%;
-    padding: 15px;
-    display: inline-block;
-    column-width: 100%;
-}
-  
   /* Clear floats after the columns */
 .row {
-    display: table-row;
+    display: flex;
+    width: 100%;
 }
 .row:after {
     content: "";
@@ -64,12 +84,22 @@ $white: white;
     clear: both;
 }
 
+.row .column {
+    width: 45%;
+    padding: 15px;
+    flex: 1;
+}
+
+@media only screen and (max-width: 1050px) {
+    .row .col {
+        display: block;
+    }
+}
 .container {
     width: 100%;
     background-color: $white;
-    outline: lightgray;
-    border: none;
-    border-radius: 10px;
+    border: 1px solid $border-colour !important;
+    border-radius: 10px !important;
 }
 
 .inner-div {
@@ -78,15 +108,18 @@ $white: white;
     margin: auto;
 }
 
+.provnce-selector {
+    padding: 0 10px;
+    font-size: 20px;
+    border: 1px solid $border-colour;
+    border-radius: 10px;
+    height: 50px;
+}
+
 //controls
 a:hover {
     color: rgb(67, 67, 253);
     cursor: pointer;
-}
-
-select {
-    padding: 0 10px;
-    font-size: 20px;
 }
 
 input[type="range"] {
@@ -94,11 +127,9 @@ input[type="range"] {
 }
 
 .button {
-    background-color: #f86;
+    background-color: $morello-colour;
     border-radius: 5px;
     padding: 10px 20px;
-    // height:30px;
-    // width: 100px;
     color: $white !important;
     border-style: none;
     margin-left: 20px;
@@ -113,8 +144,13 @@ input[type="range"] {
 
 .income-input {
     border-radius: 10px;
-    padding: 10px 10px 10px 10px;
+    border: 1px solid #e6e4e3;
+    margin-bottom: 10px;
+    height: 40px;
+    width: 100px;
     float: right;
+    font-size: 13pt;
+    font-weight: 700;
 }
 
 .slider {
@@ -138,10 +174,10 @@ input[type="range"] {
     background: $white;
     cursor: pointer;
 }
-.slider::-webkit-slider-thumb:hover {background: #f86;}
+.slider::-webkit-slider-thumb:hover {background: $morello-colour;}
 
 .slider::-moz-range-thumb {
     background: $white;
 }
-.slider::-moz-range-thumb:hover {background: #f86;}
+.slider::-moz-range-thumb:hover {background: $morello-colour;}
 

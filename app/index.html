@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en-CA" class="js" ng-app="calcApp" ng-controller="calcCtrl">
     <head>
+        <title>Tax calculator</title>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="scripts/env.js"></script>
         <script src="scripts/calcCtrl.js"></script>
-        <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="static/styles.css"/>
     </head>
 
@@ -29,7 +32,12 @@
                 </div>
 
                 <div class="text_centre padding-top">
-                    <select id="province-select" ng-model="selectedProvince" ng-options="item.name for item in provinces" ng-change="provinceOnChange()">
+                    <select id="province-select"
+                        class="provnce-selector" 
+                        ng-model="selectedProvince" 
+                        ng-options="item.name for item in provinces" 
+                        ng-change="provinceOnChange()"
+                        ng-required="true">
                         <option value="">Select province or territory</option>
                     </select>
                 </div>
@@ -40,18 +48,22 @@
                             <div class="inner-div">
                                 <div>
                                     <label for="employment-income-input">Employment income</label>
-                                    <input type="number" min="0" max="500000" class="income-input" ng-model="employmentIncome" id="employment-income-input" ng-change="updateTotal()" ng-model-options="{ updateOn: 'blur' }"/>
+                                    <input type="number" min="0" max="500000" class="income-input" ng-model="employmentIncome" id="employment-income-input" 
+                                            ng-change="updateTotal()" ng-disabled="selectedProvince == null"/>
                                 </div>
                                 <div class="padding-top">
-                                    <input type="range" min="0" max="500000" step="500" value="{{employmentIncome == null ? 0 : employmentIncome}}" class="slider"/>
+                                    <input type="range" min="0" max="500000" value="{{employmentIncome == null ? 0 : employmentIncome}}" class="slider" 
+                                            ng-change="updateFromSlider()" ng-disabled="selectedProvince == null" ng-model="employmentIncomeSlider"/>
                                 </div>
 
                                 <div class="padding-top">
                                     <label for="self-employment-income-input">Self-employment income</label>
-                                    <input type="number" min="0" max="500000" class="income-input" ng-model="selfEmploymentIncome" id="self-employment-income-input" ng-change="updateTotal()" ng-model-options="{ updateOn: 'blur' }"/>
+                                    <input type="number" min="0" max="500000" class="income-input" ng-model="selfEmploymentIncome" id="self-employment-income-input" 
+                                            ng-change="updateTotal()" ng-disabled="selectedProvince == null"/>
                                 </div>
                                 <div class="padding-top">
-                                    <input type="range" min="0" max="500000" step="500" value="{{selfEmploymentIncome == null ? 0 : selfEmploymentIncome}}" class="slider"/>
+                                    <input type="range" min="0" max="500000" value="{{selfEmploymentIncome == null ? 0 : selfEmploymentIncome}}" class="slider" 
+                                            ng-change="updateFromSlider()" ng-disabled="selectedProvince == null" ng-model="selfEmploymentIncomeSlider"/>
                                 </div>
                             </div>
 
@@ -61,25 +73,30 @@
 
                                     <div>
                                         <span>Total income</span>
-                                        <span style="float: right;">{{totalIncome | currency}}</span>
+                                        <span class="float-right">{{totalIncome | currency}}</span>
                                     </div>
                                     <div class="padding-top">
                                         <span>Total tax</span>
-                                        <span style="float: right;">{{totalTax | currency}}</span>
+                                        <span class="float-right">{{totalTax | currency}}</span>
                                     </div>
                                     <div class="padding-top padding-bottom">
                                         <span>After tax income</span>
-                                        <span style="float: right;">{{totalIncome - totalTax | currency}}</span>
+                                        <span class="float-right">{{totalIncome - totalTax | currency}}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="column" style="float: right !important;">
-                            <div class="container" id="chart-container">
+                        <div class="column">
+                            <div class="container">
+                                <canvas id="chart-canvas"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="main-footer">
+                <div id="upper-footer"></div>
+                <div id="lower-footer"></div>
             </div>
         </div>
     </body>
