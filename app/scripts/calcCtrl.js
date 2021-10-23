@@ -89,7 +89,7 @@ app.controller("calcCtrl", function($scope, $http, __env) {
                 }
             }
         }
-    }).$inject = ['__env'];
+    });
 
     //on Province change
     $scope.provinceOnChange = function() {
