@@ -49,7 +49,7 @@
                                 <div>
                                     <label for="employment-income-input">Employment income</label>
                                     <input type="number" min="0" max="500000" class="income-input" ng-model="employmentIncome" id="employment-income-input" 
-                                            ng-change="updateTotal()" ng-disabled="selectedProvince == null" ng-keyup="calculateTaxes()"/>
+                                            ng-change="updateTotal(); calculateTaxes();" ng-disabled="selectedProvince == null" ng-keyup="calculateTaxes()"/>
                                 </div>
                                 <div class="padding-top">
                                     <input type="range" min="0" max="500000" value="{{employmentIncome == null ? 0 : employmentIncome}}" class="slider" 
@@ -59,7 +59,7 @@
                                 <div class="padding-top">
                                     <label for="self-employment-income-input">Self-employment income</label>
                                     <input type="number" min="0" max="500000" class="income-input" ng-model="selfEmploymentIncome" id="self-employment-income-input" 
-                                            ng-change="updateTotal()" ng-disabled="selectedProvince == null" ng-keyup="calculateTaxes()"/>
+                                            ng-change="updateTotal(); calculateTaxes();" ng-disabled="selectedProvince == null" ng-keyup="calculateTaxes()"/>
                                 </div>
                                 <div class="padding-top">
                                     <input type="range" min="0" max="500000" value="{{selfEmploymentIncome == null ? 0 : selfEmploymentIncome}}" class="slider" 
