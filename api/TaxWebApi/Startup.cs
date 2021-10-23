@@ -22,12 +22,28 @@ namespace TaxWebApi
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options => options.Filters.Add(new HttpResponseExceptionFilter()));
             services.AddMvc();
             services.AddScoped<ITaxDataService, JsonTaxDataService>();
+
+            //dealing with CORS issues locally
+            //services.AddCors(options =>
+            //        options.AddDefaultPolicy(builder => builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost"))
+            //);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost");
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,11 +52,14 @@ namespace TaxWebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(MyAllowSpecificOrigins);
             }
             else
             {
                 app.UseExceptionHandler("/error");
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();
 
@@ -50,6 +69,8 @@ namespace TaxWebApi
             {
                 endpoints.MapControllers();
             });
+
+
         }
     }
 }
