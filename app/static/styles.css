@@ -18,17 +18,17 @@
   padding: 10px 10px 10px 10px; }
 
 #main-footer {
-  height: 50px;
+  height: 30px;
   width: 100%;
   position: relative; }
 
 #upper-footer {
   background-color: #f86;
-  height: 20%; }
+  height: 10%; }
 
 #lower-footer {
   background-color: #445;
-  height: 80%; }
+  height: 90%; }
 
 .main-content {
   background-color: #eee;
@@ -81,6 +81,9 @@
   background-color: white;
   border: 1px solid #e6e4e3 !important;
   border-radius: 10px !important; }
+
+.full-height {
+  height: 100%; }
 
 .inner-div {
   padding-top: 20px;

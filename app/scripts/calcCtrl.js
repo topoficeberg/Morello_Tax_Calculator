@@ -71,6 +71,7 @@ app.controller("calcCtrl", function($scope, $http, __env) {
         data: data,
         options: {
             responsive: true,
+            maintainAspectRatio: true,
             scales: {
                 x: {
                     stacked: true

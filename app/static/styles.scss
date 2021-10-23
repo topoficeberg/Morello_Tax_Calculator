@@ -22,19 +22,19 @@ $morello-colour: #f86;
 }
 
 #main-footer {
-    height: 50px;
+    height: 30px;
     width: 100%;
     position: relative;
 }
 
 #upper-footer {
     background-color: $morello-colour;
-    height: 20%;
+    height: 10%;
 }
 
 #lower-footer {
     background-color: #445;
-    height: 80%;
+    height: 90%;
 }
 
 
@@ -100,6 +100,10 @@ $morello-colour: #f86;
     background-color: $white;
     border: 1px solid $border-colour !important;
     border-radius: 10px !important;
+}
+
+.full-height {
+    height: 100%;
 }
 
 .inner-div {
